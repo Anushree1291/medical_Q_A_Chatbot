@@ -30,6 +30,61 @@ streamlit run app.py
 
 ---
 
+## Downloading and Extracting MedQuAD Dataset
+To use the MedQuAD dataset, follow these steps:
+
+### **Manual Download**
+1. Go to [MedQuAD GitHub Repository](https://github.com/abachaa/MedQuAD).
+2. Click on **"Code" > "Download ZIP"**.
+3. Extract the ZIP file.
+4. Move the extracted dataset to the `data/` folder inside this project.
+
+### **Automated Download with Python**
+Alternatively, you can use the following Python script to automate the process:
+
+```python
+import os
+import zipfile
+import requests
+
+# Define paths
+data_folder = "data"
+zip_path = "MedQuAD.zip"
+repo_url = "https://github.com/abachaa/MedQuAD/archive/refs/heads/master.zip"
+
+# Create data folder if not exists
+os.makedirs(data_folder, exist_ok=True)
+
+# Download the ZIP file
+print("Downloading MedQuAD dataset...")
+response = requests.get(repo_url, stream=True)
+with open(zip_path, "wb") as file:
+    for chunk in response.iter_content(chunk_size=1024):
+        if chunk:
+            file.write(chunk)
+print("Download complete.")
+
+# Extract ZIP
+print("Extracting files...")
+with zipfile.ZipFile(zip_path, "r") as zip_ref:
+    zip_ref.extractall(data_folder)
+
+# Clean up ZIP file
+os.remove(zip_path)
+print(f"Dataset extracted to '{data_folder}' successfully!")
+```
+
+### **Run This Script**
+Save this script as `download_medquad.py` inside your project folder and run:
+
+```bash
+python download_medquad.py
+```
+
+This will automatically download, extract, and place the dataset inside the `data/` folder.
+
+---
+
 ## Dataset
 The chatbot is powered by the **MedQuAD dataset**, a comprehensive medical knowledge base. The dataset includes structured medical Q&A pairs covering symptoms, diseases, treatments, and more.
 
